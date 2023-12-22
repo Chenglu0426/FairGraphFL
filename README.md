@@ -1,6 +1,6 @@
 # Towards Fair Graph Federated Learning via Incentive Mechanisms
 ### About
-This is the Pytorch implementation of the paper "Towards Fair Graph Federated Learning via Incentive Mechanisms" accepted by AAAI-2024.
+This is the Pytorch implementation of the paper "[Towards Fair Graph Federated Learning via Incentive Mechanisms](http://arxiv.org/abs/2312.13306)" accepted by AAAI-2024.
 ### Abstract
 Graph federated learning (FL) has emerged as a pivotal paradigm enabling  multiple agents to collaboratively train a graph model while preserving local data privacy. Yet, current efforts overlook a key issue: agents are self-interested and would hesitant to share data without fair and satisfactory incentives. This paper is the first endeavor to address this issue by studying the incentive mechanism for graph federated learning. 
 We identify a unique phenomenon in graph federated learning: the presence of agents posing potential harm to the federation and agents contributing with delays. This stands in contrast to previous FL incentive mechanisms that assume all agents contribute positively and in a timely manner. 
