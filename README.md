@@ -9,15 +9,16 @@ pip3 install -r requirements.txt
 For the graph classiciation datasets, download and unzip it, and put it under data/.
 ### Usage: How to run the code
 ```
-python main_oneDS.py --repeat {index of the repeat} --data_group {dataset} --num_clients {num of clients} --seed {random seed}
+python main_oneDS.py --repeat {index of the repeat}
+      --data_group {dataset}
+      --num_clients {num of clients}
+      --seed {random seed}
+      --lambda {coefficient of regularization term}
+      --alpha {size of motif vocabulary}
 ```
 ## Run repetitions for all datasets
-(1) To get all repetition results:
 
-```
-bash runnerfile
-```
-(2) To averagely aggregate all repetitions, and get the overall performance:
+To averagely aggregate all repetitions, and get the overall performance:
 
 ```
 python aggregateResults.py --inpath {the path to repetitions} --outpath {the path to outputs} --data_partition {the data partition mechanism}
