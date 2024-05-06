@@ -2,6 +2,30 @@
 ### About
 This is the Pytorch implementation of the paper "[Towards Fair Graph Federated Learning via Incentive Mechanisms](http://arxiv.org/abs/2312.13306)" accepted by AAAI-2024.
 ### Setup
+The script has been tested running under Python 3.6.5, with the following packages installed (along with their dependencies):
+
+`
+pytorch == 1.8.0
+`
+
+`pytorch-cluster == 1.5.9`
+
+`pytorch-geometric == 2.0.4`
+
+`pytorch-scatter == 2.0.9`
+
+`pytorch-sparse == 0.6.12`
+
+`networkx == 2.8.7`
+
+`scikit-learn == 1.1.2`
+
+
+
+You can install the dependency packages with the following command:
+
+
+
 ```
 pip3 install -r requirements.txt
 ```
@@ -15,6 +39,13 @@ python main_oneDS.py --repeat {index of the repeat}
       --seed {random seed}
       --lambda {coefficient of regularization term}
       --alpha {size of motif vocabulary}
+Usage:
+--repeat     int, the number to conduct the experiments
+--data_group     str, the name of the dataset
+--num_clients     int, number of clients
+--seed     int, random seed of the experiments
+--lambda     float, the coefficient of the regularization term
+--alpha     float, the ratio of the motif vocabulary size in the entire motif vocabulary 
 ```
 ## Run repetitions for all datasets
 
