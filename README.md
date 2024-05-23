@@ -63,8 +63,8 @@ Usage:
 --data_group: str, the name of the dataset
 --num_clients: int, the number of clients
 --seed: int, random seed of the experiments
---lambda: float, the coefficient of the regularization term
---alpha: float, the ratio of the motif vocabulary size in the entire motif vocabulary
+--lamb: float, the coefficient of the regularization term
+--beta: float, the ratio of the motif vocabulary size in the entire motif vocabulary
 --overlap: bool, whether clients have overlapped data, default = False
 --datapath: str, the file path of the downloaded data, default = './data'
 --outbase: str, the file path of the result of the programme, default = './outputs'
@@ -72,12 +72,7 @@ Usage:
 ```
 ##### demo:
 ```
-python main_oneDS.py \
-  --repeat 5 \
-  --data_group PROTEINS \
-  --num_clients 10 \
-  --lambda 0.1 \
-  --alpha 0.9 \
+python main_oneDS.py --data_group PROTEINS --num_clients 10 --lamb 0.1 --beta 0.9 --seed 1
 ```
 
 After running the programme, the results are stored in the `./outputs` folder. Or you could modify it in the `--outbase` option.
