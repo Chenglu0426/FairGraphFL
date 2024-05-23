@@ -32,7 +32,11 @@ pip3 install -r requirements.txt
 For the graph classiciation datasets, download and unzip it, and put it under data/.
 
 ### Files
-`client.py`: the functions of the clients, such as updating the model locally, 
+`client.py`: the functions of the agents, such as updating the model locally and uploading the prototypes.
+
+`server.py`: the functions of the server, such as aggregating the prototypes the contribution of the agents.
+
+``
 
 
 
@@ -52,7 +56,7 @@ Usage:
 --lambda     float, the coefficient of the regularization term
 --alpha     float, the ratio of the motif vocabulary size in the entire motif vocabulary 
 ```
-## Run repetitions for all datasets
+### Run repetitions for all datasets
 
 To averagely aggregate all repetitions, and get the overall performance:
 
@@ -70,6 +74,9 @@ bash runnerfile_aggregateResults
 
 ### Acknowledgement
 Some of the implementation is adopted from [Federated Graph Classification over Non-IID Graphs](https://github.com/Oxfordblue7/GCFL).
+
+### Contact
+If you have any questions, feel free to contact me through email (chenglupan@zju.edu.cn).
 
 ### Cite
 If you find this work helpful, please cite
