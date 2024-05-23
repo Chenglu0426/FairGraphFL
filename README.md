@@ -29,7 +29,7 @@ Or, you can install the dependency packages with the following command:
 pip3 install -r requirements.txt
 ```
 ### Dataset
-For the graph classiciation datasets, directly run our code and a file folder `data` would be automatically set up, then the data would be downloaded into it. If you want to change the name of the folder, you could change the name of the data path in `--datapath` setting in `main_oneDS.py`. Or, you could put your own data in the `data` folder.
+For the graph classiciation datasets, directly run our code and a file folder `data` would be automatically set up, then the data would be downloaded into it. If you want to change the name of the folder, you could change the name of the data path in `--datapath` setting in `main_oneDS.py`. Or, you could put your own data in the `data` folder. The dataset used in our paper is mainly downloaded from (https://chrsmrrs.github.io/datasets/).
 
 ### Files
 `client.py`: the functions of the agents, such as updating the model locally and uploading the prototypes.
