@@ -8,7 +8,7 @@ from torch_geometric.datasets import TUDataset
 from torch_geometric.data import DataLoader
 from torch_geometric.transforms import OneHotDegree
 from torch_geometric.datasets import UPFD
-from models import GIN, serverGIN, newsModel, serverNewsModel, ogbGIN
+from models import GIN, serverGIN, ogbGIN
 from server import Server
 from client import Client_GC, Motif_graph
 from utils import get_maxDegree, get_stats, split_data, get_numGraphLabels
