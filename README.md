@@ -36,7 +36,13 @@ For the graph classiciation datasets, download and unzip it, and put it under da
 
 `server.py`: the functions of the server, such as aggregating the prototypes the contribution of the agents.
 
-``
+`models.py`: the backbone graph models on the agents.
+
+`setupGC.py`: the initial setting of the data and model distribution.
+
+`training.py`: the training code of different federated learning frameworks.
+
+`main_oneDS.py`: the initial start of the whole program.
 
 
 
