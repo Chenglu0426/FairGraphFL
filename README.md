@@ -4,9 +4,8 @@ This is the Pytorch implementation of the paper "[Towards Fair Graph Federated L
 ### Setup
 The script has been tested running under Python 3.6.5, with the following packages installed (along with their dependencies):
 
-`
-pytorch == 1.8.0
-`
+
+`pytorch == 1.8.0`
 
 `pytorch-cluster == 1.5.9`
 
@@ -22,7 +21,7 @@ pytorch == 1.8.0
 
 
 
-You can install the dependency packages with the following command:
+Or, you can install the dependency packages with the following command:
 
 
 
@@ -31,6 +30,12 @@ pip3 install -r requirements.txt
 ```
 ### Dataset
 For the graph classiciation datasets, download and unzip it, and put it under data/.
+
+### Files
+`client.py`: the functions of the clients, such as updating the model locally, 
+
+
+
 ### Usage: How to run the code
 ```
 python main_oneDS.py --repeat {index of the repeat}
