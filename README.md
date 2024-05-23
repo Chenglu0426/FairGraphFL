@@ -54,13 +54,16 @@ python main_oneDS.py --repeat {index of the repeat}
       --seed {random seed}
       --lambda {coefficient of regularization term}
       --alpha {size of motif vocabulary}
+      --overlap {whether clients have overlapped data}
+      --outbase {name of the folder}
 Usage:
---repeat     int, the number to conduct the experiments
---data_group     str, the name of the dataset
---num_clients     int, number of clients
---seed     int, random seed of the experiments
---lambda     float, the coefficient of the regularization term
---alpha     float, the ratio of the motif vocabulary size in the entire motif vocabulary 
+--repeat: int, the number to conduct the experiments
+--data_group: str, the name of the dataset
+--num_clients: int, number of clients
+--seed: int, random seed of the experiments
+--lambda: float, the coefficient of the regularization term
+--alpha: float, the ratio of the motif vocabulary size in the entire motif vocabulary
+--overlap: bool, whether clients have overlapped data, default = False
 ```
 
 
