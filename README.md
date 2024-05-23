@@ -55,18 +55,30 @@ python main_oneDS.py --repeat {index of the repeat}
       --lambda {coefficient of regularization term}
       --alpha {size of motif vocabulary}
       --overlap {whether clients have overlapped data}
-      --outbase {name of the folder}
+      --datapath {name of the data folder}
+      --outbase {name of the output folder}
+      --hidden {the size of the prototype}
 Usage:
 --repeat: int, the number to conduct the experiments
 --data_group: str, the name of the dataset
---num_clients: int, number of clients
+--num_clients: int, the number of clients
 --seed: int, random seed of the experiments
 --lambda: float, the coefficient of the regularization term
 --alpha: float, the ratio of the motif vocabulary size in the entire motif vocabulary
 --overlap: bool, whether clients have overlapped data, default = False
+--datapath: str, the file path of the downloaded data, default = './data'
+--outbase: str, the file path of the result of the programme, default = './outputs'
+--hidden: int, the size of the graph embeddings, default = 64
 ```
-
-
+##### demo:
+```
+python main_oneDS.py \
+  --repeat 5 \
+  --data_group PROTEINS \
+  --num_clients 10 \
+  --lambda 0.1 \
+  --alpha 0.9 \
+```
 
 
 ### Acknowledgement
