@@ -270,12 +270,6 @@ if __name__ == '__main__':
 
     
 
-    # process_selftrain(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server), local_epoch=50)
-    # process_fedavg(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
-    # process_fedprox(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server), mu=0.01)
-    # process_gcfl(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
-    # process_gcflplus(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
-    # process_gcflplusdWs(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
 
     
 
