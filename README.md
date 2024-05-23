@@ -1,6 +1,6 @@
 # Towards Fair Graph Federated Learning via Incentive Mechanisms
 ### About
-This is the Pytorch implementation of the paper "[Towards Fair Graph Federated Learning via Incentive Mechanisms](http://arxiv.org/abs/2312.13306)" accepted by AAAI-2024.
+This is the Pytorch implementation of the paper "[Towards Fair Graph Federated Learning via Incentive Mechanisms](http://arxiv.org/abs/2312.13306)" accepted by AAAI-2024. Our work aims to build a fair graph federated learning framework, which could motivate the participants of graph federated learning to actively contribute to the whole federation.
 ### Setup
 The script has been tested running under Python 3.6.5, with the following packages installed (along with their dependencies):
 
@@ -96,6 +96,9 @@ If you find this work helpful, please cite
   title={Towards Fair Graph Federated Learning via Incentive Mechanisms},
   author={Chenglu Pan and Jiarong Xu and Yue Yu and Ziqi Yang and Qingbiao Wu and Chunping Wang and Lei Chen and Yang Yang},
   year={2024},
-  booktitle={AAAI}
+  booktitle={AAAI},
+  number={13},
+  pages={14499-14507},
+  volume={38},
 }
 ```
