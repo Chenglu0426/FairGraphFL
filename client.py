@@ -17,8 +17,8 @@ class Motif_graph():
     def __init__(self, graph, motif_dict, motif=None):
         self.graph = graph
         
-        self.motif_dict = motif_dict#记录图中出现哪些motif，出现多少次
-        self.motif = motif # 记录图中motif所含点的序号
+        self.motif_dict = motif_dict
+        self.motif = motif 
 class MotifDataset(Dataset):
     def __init__(self, dataset):
         self.graph = dataset
@@ -59,25 +59,25 @@ class Client_GC():
         self.convDWsNorm = 0.
 
 
-        self.motif_vocab = {} #记录出现的motif以及他们的出现次数
-        self.motif_count = {} #记录出现的motif以及含有他们的分子个数
+        self.motif_vocab = {} 
+        self.motif_count = {} 
         self.tf_idf = {}
         self.motif_dataset = []
         self.avg_tf = {}
         self.prototype = {}
-        self.prototype_code = {} #motif 编号：motif:code
-        self.code_motif = {}#code:motif,反编号
-        self.motif_code = {} #拥有的motif: code
+        self.prototype_code = {} 
+        self.code_motif = {}
+        self.motif_code = {} 
         self.motif_dataset = []
         self.motif_dict = []
-        self.motifset_dict = []# 记录motif——dataset里面所有的motif_dict
+        self.motifset_dict = []
 
 
         self.code_prototype = {} #motif_code: prototype
 
         self.simi = {}
-        self.rs = {} #每个motif的reput
-        self.reput = 0 #client的reput
+        self.rs = {} 
+        self.reput = 0
         self.payoff = 0
         self.reputation = []
 
@@ -86,182 +86,24 @@ class Client_GC():
         
         
         
-        # for graph in graphs_train:
-        #     motif_freq = {} #记录图中出现motif以及次数
-        #     label = graph.x
-        #     _, label = torch.max(label, dim=1)
-        #     label = label.tolist()
-        #     #print(label)
-        #     if graph.edge_attr is not None:
-        #         graph_net = to_networkx(graph, to_undirected=True, edge_attrs=["edge_attr"])
-        #     else:
-        #         graph_net = to_networkx(graph, to_undirected=True)
-        #     mcb = nx.cycle_basis(graph_net)
-        #     mcb_tuple = [tuple(ele) for ele in mcb]
-            
-
-        #     edges = []
-        #     for e in graph_net.edges():
-        #         count = 0
-        #         for c in mcb_tuple:
-        #             if e[0] in set(c) and e[1] in set(c):
-        #                 count += 1
-        #                 break
-        #         if count == 0:
-        #             edges.append(e)
-        #     edges = list(set(edges))
-
-
-        #     for e in edges:
-        #         #print(graph_net.get_edge_data(e[0], e[1]))
-        #         if 'edge_attr' in graph_net.get_edge_data(e[0], e[1]):
-        #             weight = graph_net.get_edge_data(e[0], e[1])['edge_attr']
-        #             weight = weight.index(max(weight))
-        #         else:
-        #             weight = 1
-                
-        #         edge = ((label[e[0]], label[e[1]]), weight)
-        #         c = deepcopy(edge[0])
-        #         weight = deepcopy(edge[1])
-        #         for i in range(2):
-        #             #print((c,weight))
-        #             if (c, weight) in self.motif_vocab:
-        #                 self.motif_vocab[(c, weight)] += 1
-        #             else:
-        #                 c = (label[e[1]], label[e[0]])
-        #         if (c, weight) not in self.motif_vocab:
-        #             self.motif_vocab[(c, weight)] = 1
-
-        #         for i in range(2):
-        #             if (c, weight) in motif_freq:
-        #                 motif_freq[(c, weight)] += 1
-        #             else:
-        #                 c = (label[e[1]], label[e[0]])
-        #         if (c, weight) not in motif_freq:
-        #             motif_freq[(c, weight)] = 1
-
-
-
-
-        #     for m in mcb_tuple:
-        #         weight = tuple(self.find_ring_weights(m, graph_net))
-        #         #print(weight)
-        #         ring = []
-        #         for i in range(len(m)):
-                    
-        #             ring.append(label[m[i]])
-        #         cycle = (tuple(ring), weight)
-        #         c = deepcopy(cycle[0])
-        #         weight = deepcopy(cycle[1])
-        #         for i in range(len(c)):
-        #             if (c, weight) in self.motif_vocab:
-        #                 self.motif_vocab[(c, weight)] += 1
-        #             else:
-        #                 c = self.shift_right(c)
-        #                 weight = self.shift_right(weight)
-        #         if (c, weight) not in self.motif_vocab:
-        #             self.motif_vocab[(c, weight)] = 1
-
-        #         for i in range(len(c)):
-        #             if (c, weight) in motif_freq:
-        #                 motif_freq[(c, weight)] += 1
-        #             else:
-        #                 c = self.shift_right(c)
-        #                 weight = self.shift_right(weight)
-        #         if (c, weight) not in motif_freq:
-        #             motif_freq[(c, weight)] = 1
-        #     for motif in motif_freq.keys():
-        #         if motif not in self.motif_count.keys():
-        #             self.motif_count[motif] = 1
-        #         else:
-        #             self.motif_count[motif] += 1
-        #     #global motif_graph
-        #     graphs = Motif_graph
-        #     #motif = list(motif_freq.keys())
-        #     self.motif_dataset.append(graphs(graph, motif_freq))
-        # for motif_graph in self.motif_dataset:
-        #     #tf_idf = {}
-            
-        #     for motif in motif_graph.motif_dict:
-        #         c = motif_graph.motif_dict[motif] #出现次数
-        #         if c > 0:
-        #             M = len(self.motif_dataset) #总分子个数
-        #             N = self.motif_count[motif] #含有motif的分子个数
-        #             tf = c * (math.log((1 + M) / (1 + N)) + 1)
-        #             #tf_idf[motif] = tf
-        #             if motif not in self.tf_idf:
-        #                 self.tf_idf[motif] = []
-        #                 self.tf_idf[motif].append(tf)
-        #             else:
-        #                 self.tf_idf[motif].append(tf)
-        # for motif in self.tf_idf.keys():
-        #     self.avg_tf[motif] = mean(self.tf_idf[motif])
-        # self.avg_tf = sorted(self.avg_tf.items(), key = lambda x: x[1], reverse=True)
-        # rank_list = []
-        # a = int(len(self.avg_tf) * 0.9)
         
-        
-        # for i in range(a):
-        #     rank_list.append(self.avg_tf[i])
-        # self.avg_tf = dict(rank_list)
-
-        
-        # for key in list(self.motif_count.keys()):
-        #     if key not in self.avg_tf:
-        #         self.motif_count.pop(key)
-
-
-        # for motif_graph in self.motif_dataset:
-        #     for key in list(motif_graph.motif_dict.keys()):
-        #         if key not in self.avg_tf:
-        #             motif_graph.motif_dict.pop(key)
-
-        # for key in self.motif_count.keys():
-        #     self.prototype[key] = []
-        
-        
-
-
-        
-        # print('done!')
     def motif_construction(self):
-        # print('2')
+        
         self.motif_dataset = []
         
-        #self.model.train()
-        # calculate local prototypes
-        # for key in self.motif_count.keys():
-        #     self.prototype[key] = []
-        #print(self.prototype)
-
-
-        # features = []
-        # for i, graph in enumerate(self.graphs_train):
-        #     feature = graph.x
-        #     if i == 0:
-        #         features = feature
-        #     else:
-        #         features = torch.cat((features, feature), dim=0)
-        # features = features.cpu().numpy()
-        # kmeans = KMeans(n_clusters = 3)
-        # kmeans.fit(features)
-        # labels = kmeans.labels_
-
+        
 
         n = 0
         for graph in self.graphs_train:
-            motif_freq = {} #记录图中出现motif以及次数
+            motif_freq = {} 
 
-            motif_idx = {} #记录图中每种motif包含的点的序号
+            motif_idx = {}
 
             label = graph.x
-            # print(label)
-
-            # print(label)
+           
             _, label = torch.max(label, dim=1)
             
-            # label = labels[n:n+graph.num_nodes]
-            # print(label)
+          
 
             n += graph.num_nodes
 
@@ -270,11 +112,7 @@ class Client_GC():
 
 
             
-            # print(label)
-            # label = torch.mean(label.to(torch.float32), dim=1)
-            # print(label)
-            threshold = 0.491
-            # label = torch.where(label > threshold, torch.tensor(1), torch.tensor(0))
+           
             
             
             if graph.edge_attr is not None:
@@ -295,7 +133,7 @@ class Client_GC():
 
             edges = []
             for e in graph_net.edges():
-                # print(e)
+                
                 count = 0
                 for c in mcb_tuple:
                     if e[0] in set(c) and e[1] in set(c):
@@ -304,26 +142,18 @@ class Client_GC():
                 if count == 0:
                     edges.append(e)
             edges = list(set(edges))
-            # print('1')
+           
 
 
             for e in edges:
-                #print(graph_net.get_edge_data(e[0], e[1]))
-                # if 'edge_attr' in graph_net.get_edge_data(e[0], e[1]):
-                #     # print(graph_net.get_edge_data(e[0], e[1]))
-                #     weight = graph_net.get_edge_data(e[0], e[1])['edge_attr']
-                    
-                #     weight = weight.index(max(weight))
-                #     # print(weight)
-                # else:
-                #     weight = 1
+                
                 weight = 1
                 
                 edge = ((label[e[0]], label[e[1]]), weight)
                 c = deepcopy(edge[0])
                 weight = deepcopy(edge[1])
                 for i in range(2):
-                    #print((c,weight))
+                    
                     if (c, weight) in self.motif_vocab:
                         self.motif_vocab[(c, weight)] += 1
                     else:
@@ -346,8 +176,7 @@ class Client_GC():
                         c = (label[e[1]], label[e[0]])
                 if (c, weight) not in motif_idx:
                     motif_idx[(c, weight)] = [(e[0], e[1])]
-                # for key in motif_idx.keys():
-                    # print(motif_idx[key])
+                
                 
 
 
@@ -355,7 +184,7 @@ class Client_GC():
 
             for m in mcb_tuple:
 
-                # print(m)
+                
                 weight = tuple(self.find_ring_weights(m, graph_net))
                 #print(weight)
                 ring = []
@@ -399,20 +228,19 @@ class Client_GC():
                     self.motif_count[motif] = 1
                 else:
                     self.motif_count[motif] += 1
-            #global motif_graph
+            
             graphs = Motif_graph
-            #motif = list(motif_freq.keys())
+            
             self.motif_dataset.append(graphs(graph, motif_freq, motif_idx))
-        #print('motif个数是:', len(self.motif_count.keys()))
-        # print(self.name)
+        
         for motif_graph in self.motif_dataset:
             #tf_idf = {}
             
             for motif in motif_graph.motif_dict:
-                c = motif_graph.motif_dict[motif] #出现次数
+                c = motif_graph.motif_dict[motif]
                 if c > 0:
-                    M = len(self.motif_dataset) #总分子个数
-                    N = self.motif_count[motif] #含有motif的分子个数
+                    M = len(self.motif_dataset) 
+                    N = self.motif_count[motif] 
                     tf = c * (math.log((1 + M) / (1 + N)) + 1)
                     #tf_idf[motif] = tf
                     if motif not in self.tf_idf:
@@ -482,60 +310,28 @@ class Client_GC():
             motif_graph.graph.to(self.args.device)
             self.model.concat = False
             _, x1, x2 = self.model(motif_graph.graph)
-            # print(x1)
+           
             
             
             
-            #print(x1)
-            #print(motif_graph.motif_dict)
+            
             x1 = x1.data
-            # print(x1.shape)
+          
             
 
             for key in motif_graph.motif_dict.keys():
-                #print(self.prototype)
-                #print('1')
-                #print(((0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)) in self.prototype.keys())
+                
                 self.prototype[key].append(x1)
 
 
-            # print(x2.shape)
-            # x2 = x2.data
-            # for key in motif_graph.motif.keys():
-            #     # print(x2.shape)
-                
-            #     ids = motif_graph.motif[key]
-            #     ids = set(ids)
-            #     # print(ids)
-            #     # print(((0,0),1) in motif_graph.motif.keys())
-            #     # print(((0,0),1) in self.prototype.keys())
-            #     for id in ids:
-            #         id = list(id)
-            #         select_rows = x2[id]
-            #         emb = select_rows.mean(dim=0, keepdim = True)
-                    
-            #         # if emb.shape == torch.Size([1]):
-            #         #     print(emb)
-            #         #     print(id)
-
-            #         # print(emb.shape)
-            #         if key in self.prototype.keys():
-                    
-            #             self.prototype[key].append(emb)
-                    
-        # for key in self.prototype:
-        #     self.prototype[key] = torch.stack(self.prototype[key]).mean(dim=0)
-        #     # print(self.prototype[key])
-        # print(self.prototype[((0,0),1)])
-
-            #print(self.prototype)
+            
         
         
         for key in self.prototype.keys():
             if len(self.prototype[key]) == 1:
                 self.prototype[key] = self.prototype[key][0].squeeze()
             elif len(self.prototype[key]) > 1:
-                #print(self.prototype[key])
+                
                 c = self.prototype[key][0]
                 for i in range(1, len(self.prototype[key])):
                     
@@ -543,20 +339,12 @@ class Client_GC():
                     c = torch.cat((c, self.prototype[key][i]), dim=0)
                 self.prototype[key] = c
                 
-            #print(self.prototype)
+            
                 
                 self.prototype[key] = torch.mean(self.prototype[key], dim=0).data
 
 
-                # print(self.prototype[key])
-                # print(self.prototype[key].shape)
-            # print(self.prototype)
                 
-                #print(self.prototype[key])
-        #print(self.prototype)
-            #print(self.prototype[key])
-            #self.prototype[key] = torch.from_numpy(self.prototype[key]).to(self.args.device)
-        # print(self.prototype[((0,0),1)])
         for key in self.prototype.keys():
         
             self.prototype[key] /= max([norm(self.prototype[key]), 1])
@@ -573,28 +361,19 @@ class Client_GC():
 
 
 
-            # print(self.prototype[key].shape)
+            
             noise = torch.normal(mean=0.,std=0.031/10,size=(1,64))[0].to(self.args.device)
-            # print(noise.device)
-            # noise = torch.normal(mean=0.,std=sigma,size=(1,64))[0].to(self.args.device)
+            
             
 
-            self.prototype[key] += noise
-             
+            
                     
-        print('done')
+    
         
     def clear_prototype(self):
-        # for key in self.motif_count.keys():
-        #     self.prototype[key] = []
-        #self.motif_vocab = {} #记录出现的motif以及他们的出现次数
-        #self.motif_count = {} #记录出现的motif以及含有他们的分子个数
-        #self.tf_idf = {}
-        #self.motif_dataset = []
-        #self.avg_tf = {}
-        #self.prototype = {}
-        self.prototype_code = {} #motif 编号：motif:code
-        self.motif_code = {} #拥有的motif: code
+        
+        self.prototype_code = {} 
+        self.motif_code = {} 
         self.prototype_code = {}
         
     
@@ -625,7 +404,7 @@ class Client_GC():
             for item in motif_list:
                 motif_code.append(self.prototype_code[item])
             motif_graph.motif_dict = tuple(motif_code)
-            #继续编号
+            
         for motif_graph in self.motif_dataset:
             if motif_graph.motif_dict in self.motif_code.keys():
                 motif_graph.motif_dict = self.motif_code[motif_graph.motif_dict]
@@ -637,72 +416,21 @@ class Client_GC():
 
             
 
-            #print(motif_graph.motif_dict)
-        #print(self.motif_code)
-
-
-        #print(self.prototype)
         dataset = MotifDataset(self.motif_dataset)
-        # print(dataset)
-        #print(len(dataset))
-        #print(dataset)
+        
         trainloader = DataLoader(dataset, batch_size=128, shuffle = False)
-        #print(trainloader)
+        
         self.backup = deepcopy(self.model)
         self.model.train()
         for batch in trainloader:
-            # print(batch)
+            
             proto = {}
             
             self.optimizer.zero_grad()
             graph, motifs, indices = batch[0].to(self.args.device), batch[1].to(self.args.device), batch[2].to(self.args.device)
-            # print(motifs)
-            #print(indices)
+            
             pred, protos, emb = self.model(graph)
-            # print(protos)
-            # print(emb.shape)
-
-
-
-            # index = 0
-            # motif_idx = {}
-            # prototype = {}
-            # for motif_graph in self.motif_dataset:
-            #     graph = motif_graph.graph
-            #     num_nodes = graph.num_nodes
-            #     for motif in motif_graph.motif:
-            #         if not isinstance(motif_graph.motif[motif], list):
-            #             motif_graph.motif[motif] = list(set(motif_graph.motif[motif]))
-            #             # print(motif_graph.motif[motif])
-                        
-            #             motif_graph.motif[motif] = [item for sublist in motif_graph.motif[motif] for item in sublist]
-            #         for item in motif_graph.motif[motif]:
-                        
-            #             print(item)
-            #             # item = list(item)
-            #             item += index
-
-            #         if motif not in motif_idx:
-            #             motif_idx[motif] = []
-                        
-            #             motif_idx[motif].extend(motif_graph.motif[motif])
-            #         else:
-            #             motif_idx[motif].extend(motif_graph.motif[motif])
-            #     index += num_nodes
-            # for motif in motif_idx:
-            #     idxs = motif_idx[motif]
-            #     select_rows = emb[idxs]
-            #     embed = select_rows.mean(dim=0, keepdim = True)
-            #     prototype[motif] = embed
-
-               
             
-            
-
-            
-            
-
-            # print(protos)
             label = graph.y
             
             loss1 = self.model.loss(pred, label)
@@ -733,39 +461,15 @@ class Client_GC():
                         
                         c = torch.cat((c, proto[key][i]), dim=0)
                     proto[key] = c
-                #print(self.prototype)
+                
                     proto[key] = torch.mean(proto[key], dim=0)
 
 
 
         
-            # for key in proto.keys():
-            #     print(key)
-            #     proto[key] = prototype[self.code_motif[key]]
-
-        
-
-
-
-
-
-
-
-
-
-            
-
-                    
-            #print(proto)
+           
             proto_global = {}
-            # print('2')
-
-            # for key in proto.keys():
-            #     for ke, value in server.global_prototype_code.items():
-            #         if key == value:
-            #             proto_global[key] = server.global_prototype[ke].data
-            #             break
-            #print(server.code)
+            
             for key in proto.keys():
                 proto_global[key] = server.global_prototype[server.code[key]].data
             
@@ -774,36 +478,30 @@ class Client_GC():
                 #print(proto[key], proto_global[key])
                 
                 loss2 += loss_mse(proto[key], proto_global[key]) / len(proto.keys())
-            # print('4')
+        
             loss = loss1 + loss2 * self.args.lamb
             loss.backward()
             self.optimizer.step()
             self.optimizer.zero_grad()
 
-            # for key in prototype.keys():
-            #     self.prototype[key] = prototype[key]
-        # print(self.prototype[((0, 1, 1, 1), (1, 1, 1, 1))])
-        #     proto = {}
-        #     # print('3')
-
-        # # print('1')
+            
         for key in self.prototype.keys():
             if len(self.prototype[key]) == 1:
                 
                 self.prototype[key] = self.prototype[key][0].squeeze().data
                 
             elif len(self.prototype[key]) > 1:
-                #print(self.prototype[key])
+                
                 c = self.prototype[key][0]
                 
                 for i in range(1, len(self.prototype[key])):
-                    #print(c)
+                   
                     
                     
                     c = torch.cat((c, self.prototype[key][i]), dim=0)
                 self.prototype[key] = c
                 
-            #print(self.prototype)
+          
                 
                 self.prototype[key] = torch.mean(self.prototype[key], dim=0).data
 
@@ -831,7 +529,7 @@ class Client_GC():
             for item in motif_list:
                 motif_code.append(self.prototype_code[item])
             motif_graph.motif_dict = tuple(motif_code)
-            #继续编号
+          
         for motif_graph in self.motif_dataset:
             if motif_graph.motif_dict in self.motif_code.keys():
                 motif_graph.motif_dict = self.motif_code[motif_graph.motif_dict]
@@ -843,16 +541,12 @@ class Client_GC():
 
             
 
-            #print(motif_graph.motif_dict)
-        #print(self.motif_code)
+            
 
-
-        #print(self.prototype)
+     
         dataset = MotifDataset(self.motif_dataset)
-        #print(len(dataset))
-        #print(dataset)
+        
         trainloader = DataLoader(dataset, batch_size=128, shuffle = True)
-        #print(trainloader)
         self.backup = deepcopy(self.model)
 
 
@@ -878,7 +572,7 @@ class Client_GC():
             pred, protos = model(graph)
             
 
-            # print(protos)
+         
             label = graph.y
             loss1 = F.nll_loss(pred, label)
             loss2 = 0.
@@ -908,12 +602,11 @@ class Client_GC():
                         
                         c = torch.cat((c, proto[key][i]), dim=0)
                     proto[key] = c
-                #print(self.prototype)
+              
                     proto[key] = torch.mean(proto[key], dim=0)
 
 
 
-        #print(self.prototype)
 
         
 
@@ -928,25 +621,17 @@ class Client_GC():
             
 
                     
-            #print(proto)
+            
             proto_global = {}
-            # print('2')
-
-            # for key in proto.keys():
-            #     for ke, value in server.global_prototype_code.items():
-            #         if key == value:
-            #             proto_global[key] = server.global_prototype[ke].data
-            #             break
-            #print(server.code)
+            
             for key in proto.keys():
                 proto_global[key] = server.global_prototype[server.code[key]].data
             
             for key in proto.keys():
 
-                #print(proto[key], proto_global[key])
                 
                 loss2 += loss_mse(proto[key], proto_global[key]) / len(proto.keys())
-            # print('4')
+           
             loss = loss1 + loss2 * self.args.lamb
 
             
@@ -962,10 +647,9 @@ class Client_GC():
             loss2.backward()
             optimizer.step()
             optimizer.zero_grad()
-            #privacy_engine.step()
-            # self.optimizer.zero_grad()
+            
             proto = {}
-            # print('3')
+       
 
         # print('1')
         for key in self.prototype.keys():
@@ -1019,80 +703,6 @@ class Client_GC():
         
         
         return reput
-
-        
-
-
-        
-       
-
-
-
-            
-            
-            
-
-
-
-                
-
-            
-
-            
-
-
-
-
-
-            
-        
-
-            
-            
-            
-            
-        
-        
-
-
-
-        
-
-
-
-
-
-
-        
-
-
-
-        
-        
-        
-
-
-                
-
-
-
-
-            
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @staticmethod
