@@ -80,6 +80,8 @@ python main_oneDS.py \
   --alpha 0.9 \
 ```
 
+After running the programme, the results are stored in the `./outputs` folder. Or you could modify it in the `--outbase` option.
+
 
 ### Acknowledgement
 Some of the implementation is adopted from [Federated Graph Classification over Non-IID Graphs](https://github.com/Oxfordblue7/GCFL).
