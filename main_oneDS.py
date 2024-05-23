@@ -9,14 +9,135 @@ import setupGC
 from training import *
 
 
+def process_selftrain(clients, server, local_epoch):
+    print("Self-training ...")
+    df = pd.DataFrame()
+    allAccs = run_selftrain_GC(clients, server, local_epoch)
+    for k, v in allAccs.items():
+        df.loc[k, [f'train_acc', f'val_acc', f'test_acc']] = v
+    print(df)
+    
+    if args.repeat is None:
+        outfile = os.path.join(outpath, f'accuracy_selftrain_GC{suffix}.csv')
+    else:
+        outfile = os.path.join(outpath, "repeats", f'{args.repeat}_accuracy_selftrain_GC{suffix}.csv')
+    df.to_csv(outfile)
+    print(f"Wrote to file: {outfile}")
 
+
+def process_fedavg(clients, server):
+    print("\nDone setting up FedAvg devices.")
+
+    print("Running FedAvg ...")
+    frame = run_fedavg(clients, server, args.num_rounds, args.local_epoch, samp=None)
+    if args.repeat is None:
+        outfile = os.path.join(outpath, f'accuracy_fedavg_GC{suffix}.csv')
+    else:
+        outfile = os.path.join(outpath, "repeats", f'{args.repeat}_accuracy_fedavg_GC{suffix}.csv')
+    frame.to_csv(outfile)
+    print(f"Wrote to file: {outfile}")
+
+
+def process_fedprox(clients, server, mu):
+    print("\nDone setting up FedProx devices.")
+
+    print("Running FedProx ...")
+    frame = run_fedprox(clients, server, args.num_rounds, args.local_epoch, mu, samp=None)
+    if args.repeat is None:
+        outfile = os.path.join(outpath, f'accuracy_fedprox_mu{mu}_GC{suffix}.csv')
+    else:
+        outfile = os.path.join(outpath, "repeats", f'{args.repeat}_accuracy_fedprox_mu{mu}_GC{suffix}.csv')
+    frame.to_csv(outfile)
+    print(f"Wrote to file: {outfile}")
+
+
+def process_gcfl(clients, server):
+    print("\nDone setting up GCFL devices.")
+    print("Running GCFL ...")
+
+    if args.repeat is None:
+        outfile = os.path.join(outpath, f'accuracy_gcfl_GC{suffix}.csv')
+    else:
+        outfile = os.path.join(outpath, "repeats", f'{args.repeat}_accuracy_gcfl_GC{suffix}.csv')
+
+    frame = run_gcfl(clients, server, args.num_rounds, args.local_epoch, EPS_1, EPS_2)
+    frame.to_csv(outfile)
+    print(f"Wrote to file: {outfile}")
+
+
+def process_gcflplus(clients, server):
+    print("\nDone setting up GCFL devices.")
+    print("Running GCFL plus ...")
+
+    if args.repeat is None:
+        outfile = os.path.join(outpath, f'accuracy_gcflplus_GC{suffix}.csv')
+    else:
+        outfile = os.path.join(outpath, "repeats", f'{args.repeat}_accuracy_gcflplus_GC{suffix}.csv')
+
+    frame = run_gcflplus(clients, server, args.num_rounds, args.local_epoch, EPS_1, EPS_2, args.seq_length, args.standardize)
+    frame.to_csv(outfile)
+    print(f"Wrote to file: {outfile}")
+
+
+def process_gcflplusdWs(clients, server):
+    print("\nDone setting up GCFL devices.")
+    print("Running GCFL plus with dWs ...")
+
+    if args.repeat is None:
+        outfile = os.path.join(outpath, f'accuracy_gcflplusDWs_GC{suffix}.csv')
+    else:
+        outfile = os.path.join(outpath, "repeats", f'{args.repeat}_accuracy_gcflplusDWs_GC{suffix}.csv')
+
+    frame = run_gcflplus_dWs(clients, server, args.num_rounds, args.local_epoch, EPS_1, EPS_2, args.seq_length, args.standardize)
+    frame.to_csv(outfile)
+    print(f"Wrote to file: {outfile}")
+
+
+def process_prototype(clients, server):
+    print("\nDone setting up prototype devices.")
+    print("Running fed prototype ...")
+    frame = run_prototype(clients, server, args.num_rounds, args.local_epoch, samp=None)
+    #outfile = os.path.join()
 
 def process_protoreput(clients, server):
     print("\nDone setting up prototype devices.")
     print("Running fed prototype ...")
-    frame = run_reput(clients, server, args.num_rounds, args.device, args.disable_dp, samp=None)
+    frame = run_protoreput(clients, server, args.num_rounds, args.device, samp=None)
 
 
+def process_protoreput2(clients, server):
+    print("\nDone setting up prototype devices.")
+    print("Running fed prototype ...")
+    frame = run_protoreput2(clients, server, args.num_rounds, args.device, args.disable_dp, samp=None)
+
+# def process_protoreput4(clients, server):
+#     print("\nDone setting up prototype devices.")
+#     print("Running fed prototype ...")
+#     frame = run_protoreput4(clients, server, args.num_rounds, args.device, args.disable_dp, samp=None)
+
+
+
+
+
+def process_protoreput3(clients, server):
+    print("\nDone setting up prototype devices.")
+    print("Running fed prototype ...")
+    frame = run_protoreput3(clients, server, args.num_rounds, args.device, samp=None)
+
+def process_reput(clients, server):
+    print('\nDone setting up devices.')
+    print('Running fed reput ...')
+    frame = run_reput(clients, server, args.num_rounds, args.local_epoch, samp=None)
+
+def process_reput2(clients, server):
+    print('\nDone setting up devices.')
+    print('Running fed reput ...')
+    frame = run_reput2(clients, server, args.num_rounds, args.local_epoch, samp=None)
+
+def process_reput3(clients, server):
+    print('\nDone setting up devices.')
+    print('Running fed reput ...')
+    frame = run_reput3(clients, server, args.num_rounds, 1, samp=None)
 
 
 
@@ -63,7 +184,7 @@ if __name__ == '__main__':
     parser.add_argument('--repeat', help='index of repeating;',
                         type=int, default=None)
     parser.add_argument('--data_group', help='specify the group of datasets',
-                        type=str, default='fakenews')
+                        type=str, default='IMDB-BINARY')
 
     parser.add_argument('--convert_x', help='whether to convert original node features to one-hot degree features',
                         type=bool, default=False)
@@ -73,9 +194,16 @@ if __name__ == '__main__':
                         type=bool, default=False)
     parser.add_argument('--standardize', help='whether to standardize the distance matrix',
                         type=bool, default=False)
+    parser.add_argument('--seq_length', help='the length of the gradient norm sequence',
+                        type=int, default=5)
+    parser.add_argument('--epsilon1', help='the threshold epsilon1 for GCFL',
+                        type=float, default=0.03)
+    parser.add_argument('--epsilon2', help='the threshold epsilon2 for GCFL',
+                        type=float, default=0.06)
     parser.add_argument('--lamb', type=float, default=0.1)
     parser.add_argument('--beta', type=float, default=0.85)
-    
+    parser.add_argument('--aug', type=bool, default=False)
+    parser.add_argument('--disable_dp', type=bool, default=False)
 
     try:
         args = parser.parse_args()
@@ -90,7 +218,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
 
-    args.device = "cuda:2" if torch.cuda.is_available() else "cpu"
+    args.device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
     EPS_1 = args.epsilon1
     EPS_2 = args.epsilon2
@@ -121,7 +249,7 @@ if __name__ == '__main__':
 
     if args.repeat is not None:
         Path(os.path.join(outpath, 'repeats')).mkdir(parents=True, exist_ok=True)
-
+    
     splitedData, df_stats = setupGC.prepareData_oneDS(args.datapath, args.data_group, num_client=args.num_clients, batchSize=args.batch_size,
                                                       convert_x=args.convert_x, seed=seed_dataSplit, overlap=args.overlap, aug=args.aug)
     print("Done")
@@ -136,6 +264,23 @@ if __name__ == '__main__':
 
     init_clients, init_server, init_idx_clients = setupGC.setup_devices(splitedData, args)
     print("\nDone setting up devices.")
+    
 
-    process_protoreput(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
+    
+
+    
+
+    # process_selftrain(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server), local_epoch=50)
+    # process_fedavg(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
+    # process_fedprox(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server), mu=0.01)
+    # process_gcfl(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
+    # process_gcflplus(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
+    # process_gcflplusdWs(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
+
+    
+
+
+    process_protoreput2(clients=copy.deepcopy(init_clients), server=copy.deepcopy(init_server))
+    
+    
     
