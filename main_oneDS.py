@@ -73,16 +73,9 @@ if __name__ == '__main__':
                         type=bool, default=False)
     parser.add_argument('--standardize', help='whether to standardize the distance matrix',
                         type=bool, default=False)
-    parser.add_argument('--seq_length', help='the length of the gradient norm sequence',
-                        type=int, default=5)
-    parser.add_argument('--epsilon1', help='the threshold epsilon1 for GCFL',
-                        type=float, default=0.03)
-    parser.add_argument('--epsilon2', help='the threshold epsilon2 for GCFL',
-                        type=float, default=0.06)
     parser.add_argument('--lamb', type=float, default=0.1)
     parser.add_argument('--beta', type=float, default=0.85)
-    parser.add_argument('--aug', type=bool, default=False)
-    parser.add_argument('--disable_dp', type=bool, default=False)
+    
 
     try:
         args = parser.parse_args()
