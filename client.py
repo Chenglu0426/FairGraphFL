@@ -270,7 +270,7 @@ class Client_GC():
                 self.prototype[key] = torch.mean(self.prototype[key], dim=0).data
 
         
-        print('done')
+        
         
     def clear_prototype(self):
 
@@ -415,7 +415,7 @@ class Client_GC():
 
 
 
-        print('finish')
+        
     def cosine_similar(self, server):
         
         similarity = torch.zeros(len(self.prototype.keys())).to(self.args.device)
