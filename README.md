@@ -62,19 +62,7 @@ Usage:
 --lambda     float, the coefficient of the regularization term
 --alpha     float, the ratio of the motif vocabulary size in the entire motif vocabulary 
 ```
-### Run repetitions for all datasets
 
-To averagely aggregate all repetitions, and get the overall performance:
-
-```
-python aggregateResults.py --inpath {the path to repetitions} --outpath {the path to outputs} --data_partition {the data partition mechanism}
-```
-
-Or, to run one file for all:
-
-```
-bash runnerfile_aggregateResults
-```
 
 
 
